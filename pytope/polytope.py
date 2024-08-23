@@ -373,7 +373,7 @@ class Polytope:
       b = np.vstack((b_ineq, b_eq, -b_eq))
       self._set_Ab(A, b)
     else: # use Qhull
-      H = ConvexHull(self.V).equations  # Qhull's format of H is [A, -b]
+      H = ConvexHull(self.V, qhull_options = "QJ").equations  # Qhull's format of H is [A, -b]
       A, b_negative = np.split(H, [-1], axis=1)
       self._set_Ab(A, -b_negative)
 
@@ -424,7 +424,7 @@ class Polytope:
     # data")
     if self.is_full_dimensional and self.n >= 2:
       # Indices of the unique vertices forming the convex hull:
-      i_V_minimal = ConvexHull(self.V).vertices
+      i_V_minimal = ConvexHull(self.V, qhull_options = "QJ").vertices
       self.V = self.V[i_V_minimal, :]
     else:  # TODO: Use cdd for both cases?
       # cdd handles this case
